@@ -56,7 +56,7 @@ body:
     attributes:
       label: Plugin Version
       description: What version of our plugin are you running?
-      placeholder: version 1.5.0
+      placeholder: "1.5.0"
     validations:
       required: true
   - type: markdown 
