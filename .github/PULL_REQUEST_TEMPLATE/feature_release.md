@@ -11,7 +11,7 @@ assignees: 4Source
 ## Describe your changes
 <!--- Describe your changes in detail -->
 
-## Feature request {#feature-request}
+## Feature request
 Fixes # <!--- Issue number -->
 
 ## How has this been tested?
