@@ -9,6 +9,13 @@ body:
     attributes: 
       label: Is your feature request related to a problem?
       description: Are you struggling to do something and think it could be made easier?
+      options: 
+        - label: The feature should solve a problem.
+          required: false
+        - label: The problem to solve is **not** a bug.
+          required: true
+    validations: 
+      required: false
   - type: textarea
     id: related-problem
     attributes: 
