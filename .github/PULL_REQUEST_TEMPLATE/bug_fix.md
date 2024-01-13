@@ -11,7 +11,7 @@ assignees: 4Source
 ## Describe your changes
 <!--- Describe your changes in detail -->
 
-## Bug report Issue 
+## Bug report 
 Fixes # <!--- Issue number -->
 
 ## Checklist before requesting a review
