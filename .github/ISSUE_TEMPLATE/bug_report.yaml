@@ -5,9 +5,6 @@ labels: ["bug"]
 assignees:
   - 4Source
 body:
-  - type: markdown
-    attributes: 
-      value: "Thanks for taking the time to fill out this bug report!"
   - type: textarea
     id: bug-description
     attributes:
@@ -70,3 +67,6 @@ body:
       placeholder: Explain any additional context...
     validations:
       required: false
+  - type: markdown
+    attributes: 
+      value: "Thanks for taking the time to fill out this bug report!"
