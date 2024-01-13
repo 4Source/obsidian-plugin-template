@@ -1,13 +1,14 @@
 name: Bug Report
 description: Create a bug report to help us improve
-title: "[Bug]: <title>"
-labels: "bug"
+title: "[Bug]: "
+labels: ["bug"]
 assignees:
   - 4Source
 body:
   - type: markdown
     attributes:
-      value: "Thanks for taking the time to fill out this bug report!"
+      value: |
+      Thanks for taking the time to fill out this bug report!
   - type: textarea
     id: bug-description
     attributes:
@@ -54,7 +55,8 @@ body:
       required: true
   - type: markdown 
     attributes: 
-      value: "This could be found in Settings>General>App>Current version"
+      value: |
+      This could be found in Settings>General>App>Current version
   - type: input
     id: plugin-version
     attributes:
@@ -65,7 +67,8 @@ body:
       required: true
   - type: markdown 
     attributes: 
-      value: "This could be found in Settings>Community plugins>Installed plugins>SettingsProfiles>Version"
+      value: |
+      This could be found in Settings>Community plugins>Installed plugins>SettingsProfiles>Version
   - type: textarea
     id: context
     attributes:
