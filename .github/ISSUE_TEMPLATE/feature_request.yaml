@@ -41,7 +41,7 @@ body:
       placeholder: Tell us an alternative solution...
     validations: 
       required: false
-- type: textarea
+  - type: textarea
     id: context
     attributes:
       label: Additional context
