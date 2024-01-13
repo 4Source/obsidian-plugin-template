@@ -1,0 +1,15 @@
+name: Bug fix
+description: Provide your bug fix
+title: "[FiX]: "
+labels: ["bug"]
+assignees:
+  - 4Source
+body:
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of what the bug is.
+      placeholder: Tell us what happened.
+    validations:
+      required: true
