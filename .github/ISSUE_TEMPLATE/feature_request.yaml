@@ -5,6 +5,10 @@ labels: ["enhancement"]
 assignees:
   - 4Source
 body:
+  - type: markdown
+    attributes: 
+      value: "> [!NOTE]
+              > Useful information that users should know, even when skimming content."
   - type: checkboxes
     attributes: 
       label: Is your feature request related to a problem?
