@@ -69,4 +69,4 @@ body:
       required: false
   - type: markdown
     attributes: 
-      value: "Thanks for taking the time to fill out this feature request!"
+      value: "Thanks for taking the time to fill out this bug report!"
