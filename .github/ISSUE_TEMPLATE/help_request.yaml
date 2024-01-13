@@ -19,3 +19,10 @@ body:
       placeholder: Explain any additional context...
     validations:
       required: false
+  - type: checkboxes
+    attributes: 
+      label: Topic don't exist allready
+      description: Have you checked whether there is already a question on this topic?
+      options: 
+        - label: I confirm that there is not already a similar question.
+          required: true
