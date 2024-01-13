@@ -16,3 +16,15 @@ body:
       placeholder: Tell us what happened.
     validations:
       required: true
+  - type: textarea
+    id: bug-reproduce-steps
+    attributes:
+      label: How to Reproduce
+      description: Steps to reproduce the behavior.
+      placeholder: |
+      1. In this environment...
+      2. With this config...
+      3. Run '...'
+      4. See error...
+    validations:
+      required: true
