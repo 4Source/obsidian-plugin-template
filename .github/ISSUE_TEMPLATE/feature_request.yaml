@@ -15,8 +15,6 @@ body:
       options: 
         - label: The feature should solve a problem.
           required: false
-    validations: 
-      required: false
   - type: textarea
     id: related-problem
     attributes: 
