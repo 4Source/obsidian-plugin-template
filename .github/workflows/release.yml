@@ -4,21 +4,43 @@ on:
   push:
     tags:
       - "*"
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  build:
+  check:
     runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v3
+    steps: 
+      - name: Check Semantic Versioning
+        env: 
+          TAG: ${{ github.ref_name }}
+        run: |
+          echo ${{env.TAG}}
+          
 
-      - name: Use Node.js
+
+      - name: Update Verion in Files
+        run: 
+
+  build:
+    needs: check
+    runs-on: ubuntu-latest
+
+    strategy: 
+      matrix:
+        node-version: ["18.x"]
+
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
-          node-version: "18.x"
+          node-version: ${{ matrix.node-version }}
 
       - name: Build plugin
         run: |
