@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo ${{github.event.pull_request.labels}}
+          echo ${{toJSON(github.event.pull_request.labels)}}
 
   build:
     if: github.event.pull_request.merged == true && (contains(github.event.pull_request.labels.*.name, 'PATCH') || contains(github.event.pull_request.labels.*.name, 'MINOR') || contains(github.event.pull_request.labels.*.name, 'MAJOR'))
