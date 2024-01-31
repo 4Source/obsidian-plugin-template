@@ -10,23 +10,7 @@ permissions:
   contents: write
 
 jobs:
-  check:
-    runs-on: ubuntu-latest
-
-    steps: 
-      - name: Check Semantic Versioning
-        env: 
-          TAG: ${{ github.ref_name }}
-        run: |
-          echo ${{env.TAG}}
-          
-
-
-      # - name: Update Verion in Files
-      #   run: 
-
   build:
-    needs: check
     runs-on: ubuntu-latest
 
     strategy: 
@@ -34,7 +18,7 @@ jobs:
         node-version: ["18.x"]
 
     steps:
-      - name: Clone Repo
+      - name: Checkout repository 
         uses: actions/checkout@v3
 
       - name: Use Node.js ${{ matrix.node-version }}
@@ -50,10 +34,9 @@ jobs:
       - name: Create release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ github.ref_name }}
         run: |
-          tag="${GITHUB_REF#refs/tags/}"
-
-          gh release create "$tag" \
-            --title="$tag" \
+          gh release create "${{env.TAG}}" \
+            --title="${{env.TAG}}" \
             --draft \
             main.js manifest.json styles.css
