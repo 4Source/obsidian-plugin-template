@@ -1,0 +1,67 @@
+name: Continuous Deployment
+on:
+  pull_request:
+    types:
+      - closed
+    branches: 
+      - master  
+  workflow_dispatch:
+
+jobs:
+  versioning:
+    runs-on: ubuntu-latest
+    #  check pull request is merged
+    permissions: 
+        pull-requests: write
+        contents: write
+
+    steps: 
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v4
+
+      - name: Bump version
+        uses: 4Source/version-control-action@v1
+        with: 
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          owner: ${{ github.repository_owner }}
+          repository:  ${{ github.event.repository.name }}
+          pr_number: ${{ github.event.number }}
+          tag_prefix: ''
+          dry_run: true
+      - name: Change version in files
+        run: |
+
+      - name: Push version tag
+        run: |
+        
+  build: 
+    runs-on: ubuntu-latest
+    needs: versioning
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository 
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 18.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18.x
+      
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build plugin
+        run: npm run build
+
+      - name: Create release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          gh release create "${{env.TAG}}" \
+            --title="${{env.TAG}}" \
+            --draft \
+            main.js manifest.json styles.css
