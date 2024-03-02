@@ -10,7 +10,7 @@ on:
 jobs:
   versioning:
     runs-on: ubuntu-latest
-    #  check pull request is merged
+    #  check pull is closed with out merge
     permissions: 
         pull-requests: write
         contents: write
@@ -21,6 +21,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Bump version
+        id: version-bump
         uses: 4Source/version-control-action@v1
         with: 
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -29,11 +30,26 @@ jobs:
           pr_number: ${{ github.event.number }}
           tag_prefix: ''
           dry_run: true
+
       - name: Change version in files
+        run: npm run version
+
+      - name: Configure git
         run: |
+          git config --global user.name "4Source"
+          git config --global user.email "38220764+4Source@users.noreply.github.com."
+      
+      - name: Commit and push changes
+        run: |
+          git commit -m "Apply version ${{ steps.version-bump.outputs.new_version }}"
+          git push
 
       - name: Push version tag
         run: |
+          git tag -a ${{ steps.version-bump.outputs.new_tag }} -m "${{ steps.version-bump.outputs.new_tag }}"
+          git push origin ${{ steps.version-bump.outputs.new_tag }}
+    outputs:
+      new_tag: ${{ steps.version-bump.outputs.new_tag }}
         
   build: 
     runs-on: ubuntu-latest
@@ -59,7 +75,7 @@ jobs:
       - name: Create release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAG: ${{ github.ref_name }}
+          TAG: ${{ needs.versioning.outputs.new_tag }}
         run: |
           gh release create "${{env.TAG}}" \
             --title="${{env.TAG}}" \
