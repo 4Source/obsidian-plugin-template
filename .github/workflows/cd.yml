@@ -8,6 +8,12 @@ on:
   workflow_dispatch:
 
 jobs:
+  log: 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Merged 
+        run: echo github.event.pull_request.merged
+
   versioning:
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true
@@ -31,13 +37,15 @@ jobs:
           tag_prefix: ''
           dry_run: true
 
-      - name: Change version in files
-        run: npm run version
-
       - name: Configure git
         run: |
           git config --global user.name "4Source"
           git config --global user.email "38220764+4Source@users.noreply.github.com."
+
+      - name: Change version in files
+        run: | 
+          npm run version -- --new_version ${{ steps.version-bump.outputs.new_version }}
+          git add manifest.json versions.json package.json
       
       - name: Commit and push changes
         run: |

@@ -8,7 +8,7 @@
     "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
     "lint": "eslint ./src",
     "lint-fix": "eslint ./src --fix",
-    "version": "node version-change.mjs && git add manifest.json versions.json package.json",
+    "version": "node version-change.mjs",
     "test": "jest"
   },
   "author": "4Source",
