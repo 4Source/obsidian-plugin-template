@@ -24,7 +24,6 @@ jobs:
 
   test:
     name: Run unit tests
-    if: github.event.pull_request.merged == true
     runs-on: [ 'ubuntu-latest', 'windows-latest', 'macos-latest' ]
 
     strategy: 
@@ -48,7 +47,6 @@ jobs:
 
   lint:
     name: Run linter
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
@@ -68,7 +66,6 @@ jobs:
 
   build: 
     name: Build Plugin
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
@@ -89,7 +86,7 @@ jobs:
   version:
     name: Version Bump 
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true 
+    if: github.event_name == 'pull_request'
     permissions: 
       pull-requests: write
 
