@@ -4,13 +4,13 @@ on:
   pull_request:
     branches:
       - master
-    paths: 
-      - 'src/**'
+    # paths: 
+    #   - 'src/**'
   push: 
     branches:
       - master
-    paths: 
-      - 'src/**'
+    # paths: 
+    #   - 'src/**'
   workflow_dispatch:
 
 jobs:
@@ -20,7 +20,7 @@ jobs:
 
     steps: 
       - name: Log event
-        run: echo ${{ github }}
+        run: echo ${{ github.event_name }}
 
   test:
     name: Run unit tests
@@ -89,7 +89,7 @@ jobs:
   version:
     name: Version Bump 
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true && ${{ github.event_name == 'push' }}
+    if: github.event.pull_request.merged == true && github.event_name == 'push'
     permissions: 
       pull-requests: write
 
