@@ -25,10 +25,6 @@
       "error",
       "tab"
     ],
-    "@stylistic/linebreak-style": [
-      "error",
-      "windows"
-    ],
     "@stylistic/quotes": [
       "error",
       "single"
