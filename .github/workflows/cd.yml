@@ -8,12 +8,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  log: 
-    runs-on: ubuntu-latest
-    steps:
-      - name: Merged 
-        run: echo ${{ github.event.pull_request.merged }}
-
   versioning:
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true
@@ -50,12 +44,12 @@ jobs:
       - name: Commit and push changes
         run: |
           git commit -m "Apply version ${{ steps.version-bump.outputs.new_version }}"
-          git push
+          git push -f 
 
       - name: Push version tag
         run: |
           git tag -a ${{ steps.version-bump.outputs.new_tag }} -m "${{ steps.version-bump.outputs.new_tag }}"
-          git push origin ${{ steps.version-bump.outputs.new_tag }}
+          git push -f origin ${{ steps.version-bump.outputs.new_tag }}
     outputs:
       new_tag: ${{ steps.version-bump.outputs.new_tag }}
         
