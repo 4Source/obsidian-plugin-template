@@ -89,7 +89,7 @@ jobs:
   version:
     name: Version Bump 
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true && github.event_name == 'push'
+    if: github.event.pull_request.merged == true 
     permissions: 
       pull-requests: write
 
