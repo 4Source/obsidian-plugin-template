@@ -14,8 +14,17 @@ on:
   workflow_dispatch:
 
 jobs:
+  log: 
+    name: Log
+    runs-on: ubuntu-latest
+
+    steps: 
+      - name: Log event
+        run: echo ${{ github }}
+
   test:
     name: Run unit tests
+    if: github.event.pull_request.merged == true
     runs-on: [ 'ubuntu-latest', 'windows-latest', 'macos-latest' ]
 
     strategy: 
@@ -39,6 +48,7 @@ jobs:
 
   lint:
     name: Run linter
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
@@ -58,6 +68,7 @@ jobs:
 
   build: 
     name: Build Plugin
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
@@ -78,7 +89,7 @@ jobs:
   version:
     name: Version Bump 
     runs-on: ubuntu-latest
-    if: 
+    if: github.event.pull_request.merged == true && ${{ github.event_name == 'push' }}
     permissions: 
       pull-requests: write
 
