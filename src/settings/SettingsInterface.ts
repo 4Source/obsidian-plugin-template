@@ -3,6 +3,5 @@ export interface Settings {
 }
 
 export const DEFAULT_SETTINGS: Settings = {
-	mySetting: 'default'
-}
-
+	mySetting: 'default',
+};
