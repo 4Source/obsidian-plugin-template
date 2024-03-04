@@ -14,14 +14,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  log: 
-    name: Log
-    runs-on: ubuntu-latest
-
-    steps: 
-      - name: Log event
-        run: echo ${{ github.event_name }}
-
   test:
     name: Run unit tests
     runs-on: [ 'ubuntu-latest', 'windows-latest', 'macos-latest' ]
