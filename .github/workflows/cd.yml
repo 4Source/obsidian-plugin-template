@@ -8,6 +8,12 @@ on:
   workflow_dispatch:
 
 jobs:
+  log: 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Merged 
+        run: echo github.event.pull_request.merged
+
   versioning:
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true
