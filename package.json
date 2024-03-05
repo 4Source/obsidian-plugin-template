@@ -5,8 +5,8 @@
 	"scripts": {
 		"dev": "node esbuild.config.mjs",
 		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
-		"lint": "eslint ./src",
-		"lint-fix": "eslint ./src --fix",
+		"lint": "eslint .",
+		"lint-fix": "eslint . --fix",
 		"version": "node version-change.mjs",
 		"test": "jest --silent"
 	},
