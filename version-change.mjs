@@ -1,9 +1,16 @@
 import { readFileSync, writeFileSync } from "fs";
+import { valid } from "semver";
 
 let targetVersion;
 
 try {
     targetVersion = process.argv.find(value => value.startsWith('--new_version')).split('=')[1];
+    if(!targetVersion) {
+        throw Error('');
+    }
+    if(!valid(targetVersion)) {
+        throw Error('')
+    }
 } catch (e) {
     throw Error('No new version recevied!');
 }
