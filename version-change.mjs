@@ -1,24 +1,25 @@
 import { readFileSync, writeFileSync } from "fs";
 import { valid } from "semver";
 
-let targetVersion;
-
-try {
-    targetVersion = process.argv.find(value => value.startsWith('--new_version')).split('=')[1];
-    if(!targetVersion) {
-        throw Error('');
-    }
-    if(!valid(targetVersion)) {
-        throw Error('')
-    }
-} catch (e) {
-    throw Error('No new version recevied!');
+const newVersion = process.argv.find(value => value.startsWith('--new_version'));
+if (!newVersion) {
+    throw Error('Param --new_version is missing!');
 }
-
+const targetVersion = newVersion.split('=')[1];
+if (!targetVersion) {
+    throw Error('Param --new_version is empty!');
+}
+if (!valid(targetVersion)) {
+    throw Error('New version is invalid!')
+}
 
 // read minAppVersion from manifest.json
 let manifestFile = JSON.parse(readFileSync("manifest.json", "utf8"));
 const { minAppVersion } = manifestFile;
+if (!minAppVersion || minAppVersion === "") {
+    throw Error('Missing minAppVersion in "manifest.json"');
+}
+
 // update version to target version
 manifestFile.version = targetVersion;
 writeFileSync("manifest.json", JSON.stringify(manifestFile, null, "\t"));
@@ -32,7 +33,7 @@ writeFileSync("package.json", JSON.stringify(packageFile, null, "\t"));
 let versionsFile = JSON.parse(readFileSync("versions.json", "utf8"));
 let keys = Object.keys(versionsFile);
 
-// remove existing versions with minAppVersion
+// remove existing versions with same minAppVersion
 keys.forEach(key => {
     if (minAppVersion === versionsFile[key]) {
         delete versionsFile[key];
