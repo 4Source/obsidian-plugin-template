@@ -14,12 +14,12 @@ This is a template repository for [Obsidian](https://obsidian.md) plugins.
 - npm run dev to start compilation in watch mode.
 
 ## Need to change 
-### package.json
+### [package.json](https://github.com/4Source/obsidian-plugin-template/blob/caf33126008642a2be32e3696f1cba34b04657fd/package.json)
 - name
 - description
 - author
 - license (optional)
-### manifest.json
+### [manifest.json](https://github.com/4Source/obsidian-plugin-template/blob/caf33126008642a2be32e3696f1cba34b04657fd/manifest.json)
 - id
 - name
 - description
@@ -28,8 +28,8 @@ This is a template repository for [Obsidian](https://obsidian.md) plugins.
 - fundingUrl
 - minAppVersion (optional)
 - isDesktopOnly (optional)
-### LICENSE (optional)
-### .github/workflows/cd.yml
+### [LICENSE](https://github.com/4Source/obsidian-plugin-template/blob/caf33126008642a2be32e3696f1cba34b04657fd/LICENSE) (optional)
+### [.github/workflows/cd.yml](https://github.com/4Source/obsidian-plugin-template/blob/caf33126008642a2be32e3696f1cba34b04657fd/.github/workflows/cd.yml)
 versioning > Configure git
 ```
 git config --global user.name "YOUR-USER"
