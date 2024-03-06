@@ -38,7 +38,7 @@ jobs:
 
       - name: Change version in files
         run: | 
-          npm run version -- --new_version ${{ steps.version-bump.outputs.new_version }}
+          npm run version -- --new_version=${{ steps.version-bump.outputs.new_version }}
           git add manifest.json versions.json package.json
       
       - name: Commit and push changes
