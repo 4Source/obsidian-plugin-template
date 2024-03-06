@@ -71,18 +71,50 @@ jobs:
       - name: Run Build
         run: npm run build
 
-  version:
-    name: Version Bump 
+  # version:
+  #   name: Version Bump 
+  #   runs-on: ubuntu-latest
+  #   if: github.event_name == 'pull_request'
+  #   permissions: 
+  #     pull-requests: write
+
+  #   steps:
+  #     - name: Checkout
+  #       id: checkout
+  #       uses: actions/checkout@v4
+  #     - name: Bump version
+  #       uses: 4Source/version-control-action@v1
+  #       with: 
+  #         github_token: ${{ secrets.GITHUB_TOKEN }}
+  #         owner: ${{ github.repository_owner }}
+  #         repository:  ${{ github.event.repository.name }}
+  #         pr_number: ${{ github.event.number }}
+  #         tag_prefix: ''
+  #         dry_run: true
+
+  versioning:
+    name: Version change
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
     permissions: 
-      pull-requests: write
+        pull-requests: write
+        contents: write
 
-    steps:
+    steps: 
       - name: Checkout
         id: checkout
         uses: actions/checkout@v4
+
+      - name: Use Node.js 18.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18.x
+    
+      - name: Install Dependencies
+        run: npm install
+
       - name: Bump version
+        id: version-bump
         uses: 4Source/version-control-action@v1
         with: 
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -91,3 +123,18 @@ jobs:
           pr_number: ${{ github.event.number }}
           tag_prefix: ''
           dry_run: true
+
+      - name: Configure git
+        run: |
+          git config --global user.name "4Source"
+          git config --global user.email "38220764+4Source@users.noreply.github.com."
+
+      - name: Change version in files
+        run: | 
+          npm run version -- --new_version=${{ steps.version-bump.outputs.new_version }}
+          git add manifest.json versions.json package.json
+      
+      - name: Commit and push changes
+        run: |
+          git commit -m "Apply version ${{ steps.version-bump.outputs.new_version }}"
+          git push 

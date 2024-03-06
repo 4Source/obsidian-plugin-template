@@ -9,6 +9,7 @@ on:
 
 jobs:
   versioning:
+    name: Version change
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true
     permissions: 
@@ -20,40 +21,21 @@ jobs:
         id: checkout
         uses: actions/checkout@v4
 
-      - name: Bump version
+      - name: Get version from file
         id: version-bump
-        uses: 4Source/version-control-action@v1
-        with: 
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          owner: ${{ github.repository_owner }}
-          repository:  ${{ github.event.repository.name }}
-          pr_number: ${{ github.event.number }}
-          tag_prefix: ''
-          dry_run: true
-
-      - name: Configure git
         run: |
-          git config --global user.name "4Source"
-          git config --global user.email "38220764+4Source@users.noreply.github.com."
-
-      - name: Change version in files
-        run: | 
-          npm run version -- --new_version ${{ steps.version-bump.outputs.new_version }}
-          git add manifest.json versions.json package.json
-      
-      - name: Commit and push changes
-        run: |
-          git commit -m "Apply version ${{ steps.version-bump.outputs.new_version }}"
-          git push -f 
+          echo "new_tag=$(npm pkg get version)" >> $GITHUB_OUTPUT
 
       - name: Push version tag
         run: |
+          echo ${{ steps.version-bump.outputs.new_tag }}
           git tag -a ${{ steps.version-bump.outputs.new_tag }} -m "${{ steps.version-bump.outputs.new_tag }}"
           git push -f origin ${{ steps.version-bump.outputs.new_tag }}
     outputs:
       new_tag: ${{ steps.version-bump.outputs.new_tag }}
         
   build: 
+    name: Build plugin release
     runs-on: ubuntu-latest
     needs: versioning
     permissions:
