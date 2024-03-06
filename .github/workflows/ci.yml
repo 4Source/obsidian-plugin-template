@@ -126,8 +126,10 @@ jobs:
 
       - name: Configure git
         run: |
+          echo ${{ github }}
           git config --global user.name "4Source"
           git config --global user.email "38220764+4Source@users.noreply.github.com."
+          git status
 
       - name: Change version in files
         run: | 
