@@ -1,11 +1,12 @@
 name: Bug report
-description: Create a bug report to help us improve
+description: Create a bug report to help us improve the plugin.
 title: "[Bug]: "
 labels: ["bug"]
+
 body:
   - type: textarea
     id: bug-description
-    attributes:
+    attributes: 
       label: Describe the bug
       description: A clear and concise description of what the bug is.
       placeholder: Tell us what happened that you didn't expect...
@@ -14,13 +15,13 @@ body:
   - type: textarea
     id: bug-reproduce-steps
     attributes:
-      label: How to Reproduce
-      description: Steps to reproduce the behavior.
+      label: To Reproduce
+      description: Steps to reproduce the behavior:
       placeholder: |
-        1. In this environment...
-        2. With this config... 
-        3. Run... 
-        4. See error...
+        1. Go to '...'
+        2. Click on '....' 
+        3. Scroll down to '....' 
+        4. See error"
     validations:
       required: true
   - type: textarea
@@ -30,45 +31,56 @@ body:
       description: A clear and concise description of what you expected to happen.
       placeholder: Tell us what you think should have happened...
     validations:
+      required: true
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: If applicable, add screenshots to help explain the bug. This could be the logs in the developer console (`CTRL` + `SHIFT` + `i`).
+      placeholder: Paste image here
+    validations:
       required: false
   - type: input
     id: operating-system
     attributes:
       label: OS of your device
-      description: What operating system is your device runnging
       placeholder: e.g. Win10
     validations:
       required: true
   - type: input
     id: obsidian-version
     attributes:
-      label: Obsidian Version
-      description: What version of obsidian are you running?
-      placeholder: v1.5.0
+      label: Obsidian version
+      placeholder: e.g. v0.12.4
     validations:
       required: true
-  - type: markdown 
-    attributes: 
-      value: "This could be found in Settings>General>App>Current version"
   - type: input
     id: plugin-version
     attributes:
-      label: Plugin Version
-      description: What version of our plugin are you running?
-      placeholder: "1.5.0"
+      label: Plugin version
+      placeholder: "e.g. v1.4.9"
     validations:
       required: true
-  - type: markdown 
-    attributes: 
-      value: "This could be found in Settings>Community plugins>Installed plugins>SettingsProfiles>Version"
+  - type: input
+    id: installer-version
+    attributes:
+      label: Installer version
+      description: If on desktop [run `this.navigator.appVersion` on the developer console, e.g. `5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) obsidian/0.12.3 Chrome/89.0.4389.128 Electron/12.0.6 Safari/537.36"`]
+      placeholder: "e.g. v1.4.9"
+    validations:
+      required: true
   - type: textarea
     id: context
     attributes:
       label: Additional context
-      description: Add any other context about the problem here. You can also add pictures or videos if it helps show the bug.
+      description: Add any other context about the problem here (e.g. the markdown producing the error).
       placeholder: Explain any additional context...
     validations:
       required: false
-  - type: markdown
-    attributes: 
-      value: "Thanks for taking the time to fill out this bug report!"
+  - type: textarea
+    id: config-files
+    attributes:
+      label: Config file
+      description: Drag&Drop your config file here [VAULT/.obsidian/plugins/obsidian-spaced-repetition/data.json]
+    validations:
+      required: false
