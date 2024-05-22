@@ -81,7 +81,9 @@ body:
     id: config-files
     attributes:
       label: Config file
-      description: Drag&Drop your config file here [VAULT/.obsidian/plugins/obsidian-spaced-repetition/data.json]
+      description: |
+        Drag & drop your config file here [VAULT/.obsidian/plugins/obsidian-spaced-repetition/data.json]
+        Drag & drop your violated file containing your error here
       placeholder: |
         data.json
         violated_file.md
