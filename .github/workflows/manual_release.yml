@@ -27,12 +27,12 @@ jobs:
 
       - name: Bump version
         id: version-bump
-        uses: 4Source/version-control-action@v1
+        uses: 4Source/version-control-action@329f3ba
         with: 
           github_token: ${{ secrets.GITHUB_TOKEN }}
           owner: ${{ github.repository_owner }}
           repository:  ${{ github.event.repository.name }}
-          pr_number: ${{ github.event.number }}
+          version_increase: ${{ inputs.version_increase }}
           tag_prefix: ''
           dry_run: true
 
