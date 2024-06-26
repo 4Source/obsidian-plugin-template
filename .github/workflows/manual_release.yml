@@ -35,7 +35,7 @@ jobs:
 
       - name: Bump version
         id: version-bump
-        uses: 4Source/version-control-action@b05a8296a800a0f1b51063edf15d0322498850c6
+        uses: 4Source/version-control-action@v1
         with: 
           github_token: ${{ secrets.GITHUB_TOKEN }}
           owner: ${{ github.repository_owner }}
