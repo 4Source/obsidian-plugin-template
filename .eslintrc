@@ -44,6 +44,13 @@
       "error",
       "always-multiline"
     ],
+    "comma-spacing": [
+      "error",
+      {
+        "before": false,
+        "after": true
+      }
+    ],
     "@stylistic/dot-location": [
       "error",
       "property"
@@ -103,13 +110,6 @@
     "@stylistic/switch-colon-spacing": "error",
     "@stylistic/template-curly-spacing": "error",
     "@stylistic/type-generic-spacing": "error",
-    "@stylistic/type-named-tuple-spacing": "error",
-    "no-fallthrough": [
-			"error",
-			{
-				"allowEmptyCase": true
-			}
-		],
-		"no-console": ["error", {"allow": ["warn", "error", "debug"]}]
+    "@stylistic/type-named-tuple-spacing": "error"
   }
 }
