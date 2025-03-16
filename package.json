@@ -10,7 +10,8 @@
 		"dev:lint": "eslint . --config .eslintrc.dev",
 		"dev:lint-fix": "eslint . --fix --config .eslintrc.dev",
 		"version": "node version-change.mjs",
-		"test": "jest --silent"
+		"test": "jest --silent",
+		"dev:test": "jest --coverage"
 	},
 	"author": "4Source",
 	"license": "MIT",
