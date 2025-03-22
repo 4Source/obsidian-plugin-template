@@ -62,7 +62,25 @@
     "@stylistic/function-call-spacing": "error",
     "@stylistic/implicit-arrow-linebreak": "error",
     "@stylistic/key-spacing": "error",
-    "@stylistic/lines-around-comment": "error",
+    "@stylistic/lines-around-comment": [
+      "error",
+      {
+        "beforeBlockComment": true,
+        "afterBlockComment": false,
+        "beforeLineComment": true,
+        "afterLineComment": false,
+        "allowBlockStart": true,
+        "allowBlockEnd": false,
+        "allowClassStart": true,
+        "allowClassEnd": false,
+        "allowObjectStart": true,
+        "allowObjectEnd": false,
+        "allowArrayStart": true,
+        "allowArrayEnd": false,
+        "ignorePattern": "TODO|HACK|BUG|TEST",
+        "applyDefaultIgnorePatterns": false
+      }
+    ],
     "@stylistic/new-parens": "error",
     "@stylistic/no-confusing-arrow": "error",
     "@stylistic/no-extra-semi": "error",
@@ -81,7 +99,8 @@
     "@stylistic/no-trailing-spaces": [
       "error",
       {
-        "skipBlankLines": true
+        "skipBlankLines": false,
+        "ignoreComments": false
       }
     ],
     "@stylistic/nonblock-statement-body-position": "error",
@@ -110,6 +129,20 @@
     "@stylistic/switch-colon-spacing": "error",
     "@stylistic/template-curly-spacing": "error",
     "@stylistic/type-generic-spacing": "error",
-    "@stylistic/type-named-tuple-spacing": "error"
+    "@stylistic/type-named-tuple-spacing": "error",
+    "no-fallthrough": [
+      "error",
+      {
+        "allowEmptyCase": true
+      }
+    ],
+    "line-comment-position": [
+      "error",
+      {
+        "position": "above",
+        "ignorePattern": "TODO|HACK|BUG|TEST",
+        "applyDefaultIgnorePatterns": false
+      }
+    ]
   }
 }
