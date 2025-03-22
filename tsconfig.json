@@ -20,6 +20,10 @@
       "ES7"
     ]
   },
+  "exclude": [
+    "**/*.test.ts",
+    "test/**"
+  ],
   "include": [
     "**/*.ts"
   ]
