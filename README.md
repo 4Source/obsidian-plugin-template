@@ -35,6 +35,8 @@ versioning > Configure git
 git config --global user.name "YOUR-USER"
 git config --global user.email "YOUR-EMAIL"
 ```
+### [bug_report.yaml](https://github.com/4Source/obsidian-plugin-template/blob/master/.github/ISSUE_TEMPLATE/bug_report.yaml)
+Plugin Version > Description: The Plugin where to look for the version
 ## Need to add
 ### New labels
 - ``major``
