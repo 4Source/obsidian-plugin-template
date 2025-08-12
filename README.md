@@ -14,12 +14,12 @@ This is a template repository for [Obsidian](https://obsidian.md) plugins.
 - npm run dev to start compilation in watch mode.
 
 ## Need to change 
-### [package.json](https://github.com/4Source/obsidian-plugin-template/blob/caf33126008642a2be32e3696f1cba34b04657fd/package.json)
+### [package.json](package.json)
 - name
 - description
 - author
 - license (optional)
-### [manifest.json](https://github.com/4Source/obsidian-plugin-template/blob/caf33126008642a2be32e3696f1cba34b04657fd/manifest.json)
+### [manifest.json](manifest.json)
 - id
 - name
 - description
@@ -28,15 +28,17 @@ This is a template repository for [Obsidian](https://obsidian.md) plugins.
 - fundingUrl
 - minAppVersion (optional)
 - isDesktopOnly (optional)
-### [LICENSE](https://github.com/4Source/obsidian-plugin-template/blob/caf33126008642a2be32e3696f1cba34b04657fd/LICENSE) (optional)
-### [.github/workflows/cd.yml](https://github.com/4Source/obsidian-plugin-template/blob/caf33126008642a2be32e3696f1cba34b04657fd/.github/workflows/cd.yml)
+### [LICENSE](LICENSE) (optional)
+### [.github/workflows/cd.yml](.github/workflows/cd.yml)
 versioning > Configure git
 ```
 git config --global user.name "YOUR-USER"
 git config --global user.email "YOUR-EMAIL"
 ```
-### [bug_report.yaml](https://github.com/4Source/obsidian-plugin-template/blob/master/.github/ISSUE_TEMPLATE/bug_report.yaml)
+### [bug_report.yaml](.github/ISSUE_TEMPLATE/bug_report.yaml)
 Plugin Version > Description: The Plugin where to look for the version
+### [CONTRIBUTING.md](.github/CONTRIBUTING.md)
+
 ## Need to add
 ### New labels
 - ``major``

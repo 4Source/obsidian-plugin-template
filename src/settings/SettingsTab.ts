@@ -4,7 +4,7 @@ import MyPlugin from 'src/main';
 export class MyPluginSettingTab extends PluginSettingTab {
 	plugin: MyPlugin;
 
-	constructor (
+	constructor(
 		app: App,
 		plugin: MyPlugin
 	) {
@@ -12,7 +12,7 @@ export class MyPluginSettingTab extends PluginSettingTab {
 		this.plugin = plugin;
 	}
 
-	display (): void {
+	display(): void {
 		const { containerEl } = this;
 
 		containerEl.empty();
