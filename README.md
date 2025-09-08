@@ -41,9 +41,9 @@ Plugin Version > Description: The Plugin where to look for the version
 
 ## Need to add
 ### New labels
-- ``major``
-- ``minor``
-- ``patch``
+- ``major`` Version when you make incompatible API changes
+- ``minor`` Version when you add functionality in a backward compatible manner
+- ``patch`` Version when you make backward compatible bug fixes
 
 # Usage
 1. Create feature branch
