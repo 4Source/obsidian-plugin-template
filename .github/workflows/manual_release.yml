@@ -31,6 +31,9 @@ jobs:
         with:
           ref: ${{ github.event.ref }}
           fetch-tags: 'true'
+          fetch-depth: '100'
+      
+      - run: git tag --list
 
       - name: Use Node.js 18.x
         uses: actions/setup-node@v4
@@ -40,10 +43,6 @@ jobs:
       - name: Check changes since last release
         id: changes
         run: |
-          git status
-          
-          git tag --list
-
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "${{ inputs.selected_release_type }} changes requested."
             echo "release_type=${{ inputs.selected_release_type }}" >> $GITHUB_OUTPUT
