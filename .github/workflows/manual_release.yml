@@ -56,6 +56,7 @@ jobs:
 
           if [ -z "$LAST_VERSION_TAG" ]; then
             echo "::error::No previous tag found. First release has to be a manual release."
+            exit 1
           else
             echo "Last tag: $LAST_VERSION_TAG"
             if git diff --quiet "$LAST_VERSION_TAG"..HEAD -- src/; then
@@ -75,6 +76,7 @@ jobs:
 
               if [ -z "$RELEASE_TYPE_TAG" ]; then
                 echo "::error::No tag found matching a release type."
+                exit 1
               fi
 
               echo "::debug::Changes detected in /src since last release."
