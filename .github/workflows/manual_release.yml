@@ -8,6 +8,7 @@ on:
         default: 'auto'
         type: choice
         options:
+          - auto
           - patch
           - minor
           - major
@@ -32,8 +33,6 @@ jobs:
           ref: ${{ github.event.ref }}
           fetch-tags: 'true'
           fetch-depth: '100'
-      
-      - run: git tag --list
 
       - name: Use Node.js 18.x
         uses: actions/setup-node@v4
@@ -45,7 +44,11 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "${{ inputs.selected_release_type }} changes requested."
-            echo "release_type=${{ inputs.selected_release_type }}" >> $GITHUB_OUTPUT
+            
+            if [ "${{ inputs.selected_release_type }}" -ne "auto" ]; then
+              echo "release_type=${{ inputs.selected_release_type }}" >> $GITHUB_OUTPUT
+              exit 0
+            fi
           fi
 
           # Find the latest semver tag
@@ -94,6 +97,7 @@ jobs:
           version_increase: ${{ steps.changes.outputs.release_type }}
           tag_prefix: ''
           dry_run: true
+          # TODO: Changes necessary to accept ref (branch)
 
       - name: Configure git
         run: |
