@@ -28,6 +28,8 @@ jobs:
       - name: Checkout
         id: checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.ref }}
 
       - name: Use Node.js 18.x
         uses: actions/setup-node@v4
