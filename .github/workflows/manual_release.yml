@@ -45,7 +45,7 @@ jobs:
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "Requested release type: ${{ inputs.selected_release_type }}"
 
-            if [ "${{ inputs.selected_release_type }}" -ne "auto" ]; then
+            if [ "${{ inputs.selected_release_type }}" != "auto" ]; then
               echo "release_type=${{ inputs.selected_release_type }}" >> $GITHUB_OUTPUT
               exit 0
             fi
