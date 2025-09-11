@@ -1,0 +1,144 @@
+name: Release new plugin version
+on: 
+  workflow_dispatch:
+    inputs: 
+      selected_release_type:
+        description: "Choose version update type"
+        required: true
+        default: 'auto'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+  
+  schedule:
+    # Schedule automatic release every Wednesday
+    - cron: '0 0 * * 3'
+
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions: 
+        pull-requests: write
+        contents: write
+
+    steps: 
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 18.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18.x
+      
+      - name: Check changes since last release
+        id: changes
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "${{ inputs.selected_release_type }} changes requested."
+            echo "::set-output name=release_type::${{ inputs.selected_release_type }}"
+          fi
+
+          # Find the latest semver tag
+          LAST_VERSION_TAG=$(git tag --list | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | grep -v '-' | sort -V | tail -n1 || echo "")
+
+          if [ -z "$LAST_VERSION_TAG" ]; then
+            echo "No previous tag found. First release has to be a manual release."
+            exit 1
+          else
+            echo "Last tag: $LAST_VERSION_TAG"
+            if git diff --quiet "$LAST_VERSION_TAG"..HEAD -- src/; then
+              echo "No changes in /src since last release."
+              exit 0
+            else
+              # Find the highest release type
+              if git tag --list | grep -q 'major'; then
+                RELEASE_TYPE_TAG="major"
+              elif git tag --list | grep -q 'minor'; then
+                RELEASE_TYPE_TAG="minor"
+              elif git tag --list | grep -q 'patch'; then
+                RELEASE_TYPE_TAG="patch"
+              else
+                RELEASE_TYPE_TAG=""
+              fi
+
+              if [ -z "$RELEASE_TYPE_TAG" ]; then
+                echo "No tag found matching a release type."
+                exit 1
+              fi
+
+              echo "$RELEASE_TYPE_TAG changes detected in /src since last release."
+              echo "::set-output name=release_type::$RELEASE_TYPE_TAG"
+            fi
+          fi         
+      
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Bump version
+        id: version-bump
+        uses: 4Source/version-control-action@v1
+        with: 
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          owner: ${{ github.repository_owner }}
+          repository:  ${{ github.event.repository.name }}
+          version_increase: ${{ steps.changes.outputs.release_type }}
+          tag_prefix: ''
+          dry_run: true
+
+      - name: Configure git
+        run: |
+          git config --global user.name "4Source"
+          git config --global user.email "38220764+4Source@users.noreply.github.com"
+
+      - name: Change version in files
+        run: | 
+          npm run version -- --new_version=${{ steps.version-bump.outputs.new_version }}
+          git add manifest.json versions.json package.json
+      
+      - name: Commit and push changes
+        run: |
+          git commit -a -m "Apply version ${{ steps.version-bump.outputs.new_version }}"
+          git push
+        
+      - name: Push version tag
+        run: |
+          git tag -a ${{ steps.version-bump.outputs.new_version }} -m "${{ steps.version-bump.outputs.new_version }}"
+          git push origin ${{ steps.version-bump.outputs.new_version }}
+
+      - name: Build plugin
+        id: build-plugin
+        run: |
+          npm run build
+
+          if [ ! -f main.js ]; then
+            echo "Error: main.js is missing."
+            exit 1
+          fi
+
+          if [ ! -f manifest.json ]; then
+            echo "Error: manifest.json is missing."
+            exit 1
+          fi
+
+          FILES="main.js manifest.json"
+          if [ -f styles.css ]; then
+            FILES="$FILES styles.css"
+          fi
+          echo "::set-output name=release_files::$FILES"
+  
+      - name: Create release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          FILES="main.js manifest.json"
+          if [ -f styles.css ]; then
+            FILES="$FILES styles.css"
+          fi
+          gh release create "${{ steps.version-bump.outputs.new_version }}" \
+            --title "${{ steps.version-bump.outputs.new_version }}" \
+            --draft \
+            ${{ steps.build-plugin.outputs.release_files }}
