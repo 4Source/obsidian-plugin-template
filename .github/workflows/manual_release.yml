@@ -39,6 +39,7 @@ jobs:
       - name: Check changes since last release
         id: changes
         run: |
+          git status
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "${{ inputs.selected_release_type }} changes requested."
             echo "release_type=${{ inputs.selected_release_type }}" >> $GITHUB_OUTPUT
