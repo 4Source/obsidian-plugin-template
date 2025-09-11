@@ -55,8 +55,7 @@ jobs:
           LAST_VERSION_TAG=$(git tag --list | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | grep -v '-' | sort -V | tail -n1 || echo "")
 
           if [ -z "$LAST_VERSION_TAG" ]; then
-            echo "No previous tag found. First release has to be a manual release."
-            exit 1
+            echo "::error::No previous tag found. First release has to be a manual release."
           else
             echo "Last tag: $LAST_VERSION_TAG"
             if git diff --quiet "$LAST_VERSION_TAG"..HEAD -- src/; then
@@ -75,8 +74,7 @@ jobs:
               fi
 
               if [ -z "$RELEASE_TYPE_TAG" ]; then
-                echo "No tag found matching a release type."
-                exit 1
+                echo "::error::No tag found matching a release type."
               fi
 
               echo "::debug::Changes detected in /src since last release."
