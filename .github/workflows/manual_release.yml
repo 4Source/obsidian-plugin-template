@@ -43,8 +43,8 @@ jobs:
         id: changes
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "${{ inputs.selected_release_type }} changes requested."
-            
+            echo "Requested release type: ${{ inputs.selected_release_type }}"
+
             if [ "${{ inputs.selected_release_type }}" -ne "auto" ]; then
               echo "release_type=${{ inputs.selected_release_type }}" >> $GITHUB_OUTPUT
               exit 0
@@ -79,7 +79,9 @@ jobs:
                 exit 1
               fi
 
-              echo "$RELEASE_TYPE_TAG changes detected in /src since last release."
+              echo "::debug::Changes detected in /src since last release."
+
+              echo "Release tag: $RELEASE_TYPE_TAG"
               echo "release_type=${{ inputs.selected_release_type }}" >> $GITHUB_OUTPUT
             fi
           fi         
@@ -152,3 +154,8 @@ jobs:
             --title "${{ steps.version-bump.outputs.new_version }}" \
             --draft \
             ${{ steps.build-plugin.outputs.release_files }}
+      
+      - name: Remove release type tags
+        run: |
+          echo "TODO"
+          exit 1
