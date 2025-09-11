@@ -39,7 +39,7 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "${{ inputs.selected_release_type }} changes requested."
-            echo "::set-output name=release_type::${{ inputs.selected_release_type }}"
+            echo "release_type=${{ inputs.selected_release_type }}" >> $GITHUB_OUTPUT
           fi
 
           # Find the latest semver tag
@@ -71,7 +71,7 @@ jobs:
               fi
 
               echo "$RELEASE_TYPE_TAG changes detected in /src since last release."
-              echo "::set-output name=release_type::$RELEASE_TYPE_TAG"
+              echo "release_type=${{ inputs.selected_release_type }}" >> $GITHUB_OUTPUT
             fi
           fi         
       
@@ -128,7 +128,7 @@ jobs:
           if [ -f styles.css ]; then
             FILES="$FILES styles.css"
           fi
-          echo "::set-output name=release_files::$FILES"
+          echo "release_files=$FILES" >> $GITHUB_OUTPUT
   
       - name: Create release
         env:
