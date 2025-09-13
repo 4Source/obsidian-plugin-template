@@ -56,8 +56,7 @@ jobs:
           LAST_VERSION_TAG=$(git tag --list | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | grep -v '-' | sort -V | tail -n1 || echo "")
 
           if [ -z "$LAST_VERSION_TAG" ]; then
-            echo "::error::No previous tag found. First release has to be a manual release."
-            exit 1
+            echo "No previous tag found. Assuming first release."
           else
             echo "Last tag: $LAST_VERSION_TAG"
             if git diff --quiet "$LAST_VERSION_TAG"..HEAD -- src/; then
@@ -65,23 +64,24 @@ jobs:
               exit 0
             else
               echo "::debug::Changes detected in /src since last release."
-
-              # Find the highest release type
-              if git tag --list | grep -q 'major'; then
-                RELEASE_TYPE_TAG="major"
-              elif git tag --list | grep -q 'minor'; then
-                RELEASE_TYPE_TAG="minor"
-              elif git tag --list | grep -q 'patch'; then
-                RELEASE_TYPE_TAG="patch"
-              else
-                echo "::error::No tag found matching a release type."
-                exit 1
-              fi
-
-              echo "Release tag: $RELEASE_TYPE_TAG"
-              echo "release_type=$RELEASE_TYPE_TAG" >> $GITHUB_OUTPUT
             fi
-          fi         
+          fi
+
+          # Find the highest release type
+          if git tag --list | grep -q 'major'; then
+            RELEASE_TYPE_TAG="major"
+          elif git tag --list | grep -q 'minor'; then
+            RELEASE_TYPE_TAG="minor"
+          elif git tag --list | grep -q 'patch'; then
+            RELEASE_TYPE_TAG="patch"
+          else
+            echo "::error::No tag found matching a release type."
+            exit 1
+          fi
+
+          echo "Release tag: $RELEASE_TYPE_TAG"
+          echo "release_type=$RELEASE_TYPE_TAG" >> $GITHUB_OUTPUT
+                   
       
       - name: Install Dependencies
         run: npm install
