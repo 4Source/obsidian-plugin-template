@@ -31,10 +31,7 @@ jobs:
         uses: actions/checkout@0548471950d86b19eae6c063105707c831fb5c03
         with:
           ref: ${{ github.event.ref }}
-          fetch-depth: 0
-          fetch-tags: false
-
-      - run: git tag --list
+          fetch-tags: true
 
       - name: Use Node.js 18.x
         uses: actions/setup-node@v4
