@@ -96,7 +96,6 @@ jobs:
           version_increase: ${{ steps.changes.outputs.release_type }}
           tag_prefix: ''
           dry_run: true
-          # TODO: Changes necessary to accept ref (branch)
 
       - name: Configure git
         run: |
@@ -143,14 +142,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          FILES="main.js manifest.json"
-          if [ -f styles.css ]; then
-            FILES="$FILES styles.css"
-          fi
           gh release create "${{ steps.version-bump.outputs.new_version }}" \
             --title "${{ steps.version-bump.outputs.new_version }}" \
-            --draft \
-            ${{ steps.build-plugin.outputs.release_files }}
+            --generate-notes \
+            "${{ steps.build-plugin.outputs.release_files }}"
       
       - name: Remove release type tags
         run: |
