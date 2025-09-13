@@ -25,14 +25,15 @@ jobs:
           # TODO: From pull request get the tag to set the release type 
           echo "::debug::Labels: ${{ github.event.pull_request.labels }}"
 
-          if ${{ github.event.pull_request.labels }} | grep -q 'major'; then
+          if echo "${{ github.event.pull_request.labels }}" | grep -q 'major'; then
             RELEASE_TYPE_TAG="major"
-          elif ${{ github.event.pull_request.labels }} | grep -q 'minor'; then
+          elif echo "${{ github.event.pull_request.labels }}" | grep -q 'minor'; then
             RELEASE_TYPE_TAG="minor"
-          elif ${{ github.event.pull_request.labels }} | grep -q 'patch'; then
+          elif echo "${{ github.event.pull_request.labels }}" | grep -q 'patch'; then
             RELEASE_TYPE_TAG="patch"
           else
-            RELEASE_TYPE_TAG=""
+            echo "::error::No tag found matching a release type."
+            exit 1
           fi
 
           echo "Release tag: $RELEASE_TYPE_TAG"
