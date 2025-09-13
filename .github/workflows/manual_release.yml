@@ -28,11 +28,13 @@ jobs:
     steps: 
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@0548471950d86b19eae6c063105707c831fb5c03
         with:
           ref: ${{ github.event.ref }}
-          fetch-tags: 'true'
-          fetch-depth: '100'
+          fetch-depth: 0
+          fetch-tags: false
+
+      - run: git tag --list
 
       - name: Use Node.js 18.x
         uses: actions/setup-node@v4
@@ -51,6 +53,8 @@ jobs:
             fi
           fi
 
+          echo "::debug::Tags: git tag --list"
+
           # Find the latest semver tag
           LAST_VERSION_TAG=$(git tag --list | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | grep -v '-' | sort -V | tail -n1 || echo "")
 
@@ -63,6 +67,8 @@ jobs:
               echo "No changes in /src since last release."
               exit 0
             else
+              echo "::debug::Changes detected in /src since last release."
+
               # Find the highest release type
               if git tag --list | grep -q 'major'; then
                 RELEASE_TYPE_TAG="major"
@@ -79,10 +85,9 @@ jobs:
                 exit 1
               fi
 
-              echo "::debug::Changes detected in /src since last release."
 
               echo "Release tag: $RELEASE_TYPE_TAG"
-              echo "release_type=${{ inputs.selected_release_type }}" >> $GITHUB_OUTPUT
+              echo "release_type=$RELEASE_TYPE_TAG" >> $GITHUB_OUTPUT
             fi
           fi         
       
