@@ -12,6 +12,10 @@ on:
           - patch
           - minor
           - major
+      force_release:
+        description: "Forces a release even without changes except with type auto"
+        type: boolean
+        default: false
   
   schedule:
     # Schedule automatic release every Wednesday
@@ -54,8 +58,17 @@ jobs:
           else
             echo "Last tag: $LAST_VERSION_TAG"
             if git diff --quiet "$LAST_VERSION_TAG"..HEAD -- src/; then
-              echo "No changes in /src since last release."
-              echo "skip=true" >> $GITHUB_OUTPUT
+              if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+                echo "::warning::No changes in /src since last release."
+                if ${{ inputs.force_release }} then
+                  echo "::warning::Forced release."
+                else 
+                  echo "skip=true" >> $GITHUB_OUTPUT
+                fi
+              elif [ "${{ github.event_name }}" == "schedule" ]; then
+                echo "No changes in /src since last release."
+                echo "skip=true" >> $GITHUB_OUTPUT
+              fi
               exit 0
             else
               echo "::debug::Changes detected in /src since last release."
@@ -161,7 +174,6 @@ jobs:
             $FILES
       
       - name: Remove release type tags
-        if: ${{ steps.changes.outputs.skip == 'false' }}
         run: |
           FAILED=0
 
