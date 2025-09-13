@@ -66,7 +66,7 @@ jobs:
                   echo "::error::Forces is not possible with release type auto."
                   exit 1
                 else 
-                  echo "skip=true" >> $GITHUB_OUTPUT
+                  exit 1
                 fi
               elif [ "${{ github.event_name }}" == "schedule" ]; then
                 echo "No changes in /src since last release."
