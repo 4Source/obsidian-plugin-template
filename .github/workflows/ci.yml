@@ -18,7 +18,7 @@ jobs:
 
     name: Run unit tests
     runs-on: ${{ matrix.os }}
-    if: always() && format('refs/heads/{0}', github.event.repository.default_branch) == github.ref
+    if: always() && github.ref == github.event.repository.default_branch
 
     steps:
       - name: Checkout repository 
@@ -38,7 +38,7 @@ jobs:
   lint:
     name: Run linter
     runs-on: ubuntu-latest
-    if: always() && format('refs/heads/{0}', github.event.repository.default_branch) == github.ref
+    if: always() && github.ref == github.event.repository.default_branch
 
     steps:
       - name: Checkout repository 
@@ -58,7 +58,7 @@ jobs:
   build: 
     name: Build Plugin
     runs-on: ubuntu-latest
-    if: always() && format('refs/heads/{0}', github.event.repository.default_branch) == github.ref
+    if: always() && github.ref == github.event.repository.default_branch
 
     steps:
       - name: Checkout repository 
@@ -78,7 +78,7 @@ jobs:
   audit: 
     name: Security Audit
     runs-on: ubuntu-latest
-    if: always() && format('refs/heads/{0}', github.event.repository.default_branch) == github.ref 
+    if: always() && github.ref == github.event.repository.default_branch 
 
     steps:
       - name: Checkout repository 
@@ -98,7 +98,7 @@ jobs:
   version:
     name: Version Bump 
     runs-on: ubuntu-latest
-    if: always() && format('refs/heads/{0}', github.event.repository.default_branch) == github.ref && github.event_name == 'pull_request'
+    if: always() && github.ref == github.event.repository.default_branch && github.event_name == 'pull_request'
     permissions: 
       pull-requests: write
 
