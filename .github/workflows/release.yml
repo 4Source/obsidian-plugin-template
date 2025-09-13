@@ -13,7 +13,7 @@ on:
           - minor
           - major
       force_release:
-        description: "Forces a release even without changes except with type auto"
+        description: "Forces a release even without changes (not auto)"
         type: boolean
         default: false
   
@@ -60,8 +60,11 @@ jobs:
             if git diff --quiet "$LAST_VERSION_TAG"..HEAD -- src/; then
               if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
                 echo "::warning::No changes in /src since last release."
-                if ${{ inputs.force_release }} then
+                if ${{ inputs.force_release }} && [ "${{ inputs.selected_release_type }}" != "auto" ]; then
                   echo "::warning::Forced release."
+                elif ${{ inputs.force_release }} && [ "${{ inputs.selected_release_type }}" == "auto" ]; then
+                  echo "::error::Forces is not possible with release type auto."
+                  echo "skip=true" >> $GITHUB_OUTPUT
                 else 
                   echo "skip=true" >> $GITHUB_OUTPUT
                 fi
