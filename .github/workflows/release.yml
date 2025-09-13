@@ -74,14 +74,9 @@ jobs:
               elif git tag --list | grep -q 'patch'; then
                 RELEASE_TYPE_TAG="patch"
               else
-                RELEASE_TYPE_TAG=""
-              fi
-
-              if [ -z "$RELEASE_TYPE_TAG" ]; then
                 echo "::error::No tag found matching a release type."
                 exit 1
               fi
-
 
               echo "Release tag: $RELEASE_TYPE_TAG"
               echo "release_type=$RELEASE_TYPE_TAG" >> $GITHUB_OUTPUT
@@ -159,5 +154,20 @@ jobs:
       
       - name: Remove release type tags
         run: |
-          echo "TODO"
-          exit 1
+          FAILED=0
+
+          for tag in major minor patch; do
+            if git tag -l "$tag" >/dev/null; then
+              echo "Deleting remote tag: $tag"
+              if git push --delete origin $tag; then
+                echo "::debug::Deleted remote tag $tag"
+              else
+                echo "::error::Failed to delete remote tag $tag"
+                FAILED=1
+              fi
+            else
+              echo "::debug::No $tag tag found locally."
+            fi
+          done
+
+          exit $FAILED

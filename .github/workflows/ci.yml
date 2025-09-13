@@ -47,10 +47,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - run: |
-          echo "${{github.event.sender}}"
-          echo "${{github.event}}"
-
       - name: Checkout repository 
         uses: actions/checkout@v4
 
