@@ -64,7 +64,7 @@ jobs:
                   echo "::warning::Forced release."
                 elif ${{ inputs.force_release }} && [ "${{ inputs.selected_release_type }}" == "auto" ]; then
                   echo "::error::Forces is not possible with release type auto."
-                  echo "skip=true" >> $GITHUB_OUTPUT
+                  exit 1
                 else 
                   echo "skip=true" >> $GITHUB_OUTPUT
                 fi
