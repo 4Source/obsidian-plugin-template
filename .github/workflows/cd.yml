@@ -22,14 +22,14 @@ jobs:
       - name: Process Pull Request
         id: process-pr
         run: |
-          # TODO: From pull request get the tag to set the release type 
-          echo "::debug::Labels: ${{ github.event.pull_request.labels }}"
+          LABELS=$(jq -r '.pull_request.labels[].name' "$GITHUB_EVENT_PATH")
+          echo "::debug::Labels: $LABELS"
 
-          if echo "${{ github.event.pull_request.labels }}" | grep -q 'major'; then
+          if echo "$LABELS" | grep -q 'major'; then
             RELEASE_TYPE_TAG="major"
-          elif echo "${{ github.event.pull_request.labels }}" | grep -q 'minor'; then
+          elif echo "$LABELS" | grep -q 'minor'; then
             RELEASE_TYPE_TAG="minor"
-          elif echo "${{ github.event.pull_request.labels }}" | grep -q 'patch'; then
+          elif echo "$LABELS" | grep -q 'patch'; then
             RELEASE_TYPE_TAG="patch"
           else
             echo "::error::No tag found matching a release type."
