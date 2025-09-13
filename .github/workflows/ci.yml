@@ -2,6 +2,12 @@ name: Continuous Integration
 
 on: 
   pull_request:
+    types: 
+      - opened
+      - synchronize
+      - reopened
+      - labeled
+      - unlabeled
     paths: 
       - 'src/**'
       - 'test/**'
@@ -9,6 +15,8 @@ on:
     paths: 
       - 'src/**'
       - 'test/**'
+    branches: 
+       - master  
 
 jobs:
   test:
