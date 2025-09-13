@@ -13,7 +13,7 @@ export default class MyPlugin extends Plugin {
 	}
 
 	onunload() {
-		// TEST CHANGES FOR RELEASE WORKFLOW 1
+		// TEST CHANGES FOR RELEASE WORKFLOW 2
 	}
 
 	async loadSettings() {
