@@ -60,9 +60,10 @@ jobs:
             if git diff --quiet "$LAST_VERSION_TAG"..HEAD -- src/; then
               if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
                 echo "::warning::No changes in /src since last release."
-                if ${{ inputs.force_release }} && [ "${{ inputs.selected_release_type }}" != "auto" ]; then
+                FORCE_RELEASE="${{ github.event.inputs.force_release || false }}"
+                if $FORCE_RELEASE && [ "${{ inputs.selected_release_type }}" != "auto" ]; then
                   echo "::warning::Forced release."
-                elif ${{ inputs.force_release }} && [ "${{ inputs.selected_release_type }}" == "auto" ]; then
+                elif $FORCE_RELEASE && [ "${{ inputs.selected_release_type }}" == "auto" ]; then
                   echo "::error::Forces is not possible with release type auto."
                   exit 1
                 else 
