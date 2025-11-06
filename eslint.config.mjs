@@ -134,6 +134,18 @@ export default defineConfig([
 				ignorePattern: 'TODO|HACK|BUG|TEST',
 				applyDefaultIgnorePatterns: false,
 			}],
+
+			'@typescript-eslint/no-explicit-any': 'error',
+			'@typescript-eslint/array-type': ['error', {
+				default: 'generic'
+			}],
+			'@typescript-eslint/ban-ts-comment': ['error', {
+			    minimumDescriptionLength: 10,
+			    'ts-check': false,
+			    'ts-expect-error': 'allow-with-description',
+			    'ts-ignore': false,
+			    'ts-nocheck': false,
+  			}],
 		},
 	},
 ]);
