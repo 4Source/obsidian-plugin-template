@@ -29,12 +29,6 @@ This is a template repository for [Obsidian](https://obsidian.md) plugins.
 - minAppVersion (optional)
 - isDesktopOnly (optional)
 ### [LICENSE](LICENSE) (optional)
-### [.github/workflows/cd.yml](.github/workflows/cd.yml)
-versioning > Configure git
-```
-git config --global user.name "YOUR-USER"
-git config --global user.email "YOUR-EMAIL"
-```
 ### [bug_report.yaml](.github/ISSUE_TEMPLATE/bug_report.yaml)
 Plugin Version > Description: The Plugin where to look for the version
 ### [CONTRIBUTING.md](.github/CONTRIBUTING.md)
