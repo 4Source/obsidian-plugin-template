@@ -20,7 +20,7 @@ on:
 
   schedule:
     # Schedule automatic release every Wednesday
-    # - cron: "0 0 * * 3"
+    - cron: "0 0 * * 3"
 
 jobs:
   release:
