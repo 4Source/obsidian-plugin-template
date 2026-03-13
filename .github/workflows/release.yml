@@ -1,12 +1,12 @@
 name: Release new plugin version
 
-on: 
+on:
   workflow_dispatch:
-    inputs: 
+    inputs:
       selected_release_type:
         description: "Choose version update type"
         required: true
-        default: 'auto'
+        default: "auto"
         type: choice
         options:
           - auto
@@ -17,19 +17,19 @@ on:
         description: "Forces a release even without changes (not auto)"
         type: boolean
         default: false
-  
+
   schedule:
     # Schedule automatic release every Wednesday
-    - cron: '0 0 * * 3'
+    - cron: "0 0 * * 3"
 
 jobs:
   release:
     runs-on: ubuntu-latest
-    permissions: 
-        pull-requests: write
-        contents: write
+    permissions:
+      pull-requests: write
+      contents: write
 
-    steps: 
+    steps:
       - name: Checkout
         id: checkout
         # TODO: Have to use this commit because fetch-tags is not working in main till this is merged to main
@@ -42,7 +42,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18.x
-      
+
       - name: Check changes since last release
         id: changes
         run: |
@@ -102,8 +102,7 @@ jobs:
 
           echo "Release tag: $RELEASE_TYPE_TAG"
           echo "release_type=$RELEASE_TYPE_TAG" >> $GITHUB_OUTPUT
-                   
-      
+
       - name: Install Dependencies
         if: ${{ steps.changes.outputs.skip == 'false' }}
         run: npm install
@@ -112,12 +111,12 @@ jobs:
         if: ${{ steps.changes.outputs.skip == 'false' }}
         id: version-bump
         uses: 4Source/version-control-action@v1
-        with: 
+        with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           owner: ${{ github.repository_owner }}
-          repository:  ${{ github.event.repository.name }}
+          repository: ${{ github.event.repository.name }}
           version_increase: ${{ steps.changes.outputs.release_type }}
-          tag_prefix: ''
+          tag_prefix: ""
           dry_run: true
 
       - name: Configure git
@@ -128,16 +127,16 @@ jobs:
 
       - name: Change version in files
         if: ${{ steps.changes.outputs.skip == 'false' }}
-        run: | 
+        run: |
           npm run version -- --new_version=${{ steps.version-bump.outputs.new_version }}
           git add manifest.json versions.json package.json
-      
+
       - name: Commit and push changes
         if: ${{ steps.changes.outputs.skip == 'false' }}
         run: |
           git commit -a -m "Apply version ${{ steps.version-bump.outputs.new_version }}"
           git push
-        
+
       - name: Push version tag
         if: ${{ steps.changes.outputs.skip == 'false' }}
         run: |
@@ -165,7 +164,7 @@ jobs:
             FILES="$FILES styles.css"
           fi
           echo "release_files=$FILES" >> $GITHUB_OUTPUT
-  
+
       - name: Create release
         if: ${{ steps.changes.outputs.skip == 'false' }}
         env:
@@ -176,8 +175,9 @@ jobs:
             --title "${{ steps.version-bump.outputs.new_version }}" \
             --generate-notes \
             $FILES
-      
+
       - name: Remove release type tags
+        if: ${{ steps.changes.outputs.skip == 'false'}}
         run: |
           FAILED=0
 
