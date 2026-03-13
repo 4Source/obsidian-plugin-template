@@ -1,3 +1,4 @@
+import { execSync } from 'child_process';
 import { readFileSync, writeFileSync } from 'fs';
 import { valid } from 'semver';
 
@@ -10,14 +11,14 @@ if (!targetVersion) {
 	throw Error('Param --new_version is empty!');
 }
 if (!valid(targetVersion)) {
-	throw Error('New version is invalid!');
+	throw Error('New version is invalid!')
 }
 
 // read minAppVersion from manifest.json
 let manifestFile = JSON.parse(readFileSync('manifest.json', 'utf8'));
 const { minAppVersion } = manifestFile;
 if (!minAppVersion || minAppVersion === '') {
-	throw Error('Missing minAppVersion in "manifest.json"');
+	throw Error(`Missing minAppVersion in 'manifest.json'`);
 }
 
 // update version to target version
@@ -29,7 +30,14 @@ let packageFile = JSON.parse(readFileSync('package.json', 'utf8'));
 packageFile.version = targetVersion;
 writeFileSync('package.json', JSON.stringify(packageFile, null, '\t'));
 
-// read versions file
+// update version in package-lock
+try {
+	execSync('npm install', { stdio: 'inherit' });
+} catch (error) {
+	throw Error('npm installed failed: ' + error);
+}
+
+// read versions file 
 let versionsFile = JSON.parse(readFileSync('versions.json', 'utf8'));
 let keys = Object.keys(versionsFile);
 
