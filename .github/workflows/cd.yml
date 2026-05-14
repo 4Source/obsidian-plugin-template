@@ -1,18 +1,17 @@
-name: Continuous Deployment
+name: Continuous Delivery
+
 on:
   pull_request:
     types:
       - closed
     branches: 
       - master  
-  workflow_dispatch:
 
 jobs:
   release:
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true
     permissions: 
-        pull-requests: write
         contents: write
 
     steps: 
@@ -20,55 +19,32 @@ jobs:
         id: checkout
         uses: actions/checkout@v4
 
-      - name: Use Node.js 18.x
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18.x
-      
-      - name: Install Dependencies
-        run: npm install
+      - name: Process Pull Request
+        id: process-pr
+        run: |
+          LABELS=$(jq -r '.pull_request.labels[].name' "$GITHUB_EVENT_PATH")
+          echo "::debug::Labels: $LABELS"
 
-      - name: Bump version
-        id: version-bump
-        uses: 4Source/version-control-action@v1
-        with: 
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          owner: ${{ github.repository_owner }}
-          repository:  ${{ github.event.repository.name }}
-          pr_number: ${{ github.event.number }}
-          tag_prefix: ''
-          dry_run: true
+          if echo "$LABELS" | grep -q 'major'; then
+            RELEASE_TYPE_TAG="major"
+          elif echo "$LABELS" | grep -q 'minor'; then
+            RELEASE_TYPE_TAG="minor"
+          elif echo "$LABELS" | grep -q 'patch'; then
+            RELEASE_TYPE_TAG="patch"
+          else
+            echo "::error::No tag found matching a release type."
+            exit 1
+          fi
+
+          echo "Release tag: $RELEASE_TYPE_TAG"
+          echo "release_type=$RELEASE_TYPE_TAG" >> $GITHUB_OUTPUT
 
       - name: Configure git
         run: |
-          git config --global user.name "4Source"
-          git config --global user.email "38220764+4Source@users.noreply.github.com."
-
-      - name: Change version in files
-        run: | 
-          npm run version -- --new_version=${{ steps.version-bump.outputs.new_version }}
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
       
-      - name: Commit and push changes
+      - name: Create or Update release type tag
         run: |
-          git commit -a -m "Apply version ${{ steps.version-bump.outputs.new_version }}"
-          git push -f 
-      
-      - name: Push version tag
-        run: |
-          git tag -a ${{ steps.version-bump.outputs.new_version }} -m "${{ steps.version-bump.outputs.new_version }}"
-          git push -f origin ${{ steps.version-bump.outputs.new_version }}
-
-      - name: Build plugin
-        run: npm run build
-  
-      - name: Create release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          FILES="main.js manifest.json"
-          if [ -f styles.css ]; then
-            FILES="$FILES styles.css"
-          fi
-          gh release create "${{ steps.version-bump.outputs.new_version }}" \
-            --title "${{ steps.version-bump.outputs.new_version }}" \
-            --draft $FILES
+          git tag -fa ${{ steps.process-pr.outputs.release_type }} -m "${{ steps.process-pr.outputs.release_type }}"
+          git push origin -f ${{ steps.process-pr.outputs.release_type }}
