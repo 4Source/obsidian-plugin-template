@@ -1,0 +1,13 @@
+name: Setup Repository
+on:
+  workflow_dispatch:
+    inputs:
+      # TODO: Inputs for all configurations
+
+      # TODO: Setup labels: major, minor, patch
+      # TODO: Change plugin name from input
+      # TODO: Set repository configurations if input enabled
+      # TODO: Update author name 
+      # TODO: Change minAppVersion to current obsidian release
+      # TODO: Remove setup action from repo if input enabled
+      # TODO: Change version to starting version 0.1.0
