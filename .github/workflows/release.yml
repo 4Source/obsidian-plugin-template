@@ -32,8 +32,7 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        # TODO: Have to use this commit because fetch-tags is not working in main till this is merged to main
-        uses: actions/checkout@0548471950d86b19eae6c063105707c831fb5c03
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.event.ref }}
           fetch-tags: true
